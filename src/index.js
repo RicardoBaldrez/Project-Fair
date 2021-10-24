@@ -2,8 +2,8 @@ import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import { StylesProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Routes from './routes';
 import './index.css';
+import Router from './routes'
 
 const theme = createTheme({
   palette: {
@@ -21,7 +21,7 @@ ReactDOM.render(
     {/*Faz com o material-ui inclua sua estilização primeiro, para que depois tenhamos mais liberdade com a nossa estilização 'sem sobreposição'*/}
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <Routes />
+        <Router />
       </ThemeProvider>
     </StylesProvider>
   </React.StrictMode>,
