@@ -11,9 +11,22 @@ function Produto({
   foto,
   id,
   valor,
-  unidade
 }) {
   const { cart, setCart } = useContext(CartContext);
+
+  function addProduct(newProduct) {
+    const productExist = cart.some(productItem => productItem.id === newProduct.id);
+    if(!productExist) {
+      newProduct.quantity = 1;
+      return setCart(previousCart => 
+        [ ...previousCart, newProduct]
+      );
+    }
+    setCart(previousCart => previousCart.map(itemCart => {
+      if(itemCart.id === newProduct.id) itemCart.quantity += 1;
+      return itemCart;
+    }))
+  }
 
   return (
       <Container>
@@ -32,7 +45,7 @@ function Produto({
           >
             <RemoveIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => addProduct({ nome, foto, id, valor })}>
             <AddIcon />
           </IconButton>
         </div>
