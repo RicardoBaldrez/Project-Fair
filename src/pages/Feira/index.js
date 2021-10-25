@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
   Container,
   Header,
@@ -7,15 +8,18 @@ import feira from './feira.json';
 import Produto from 'components/Produto';
 import NavBar from './NavBar';
 
+import { UserContext } from 'common/context/User';
 
 function Feira() {
+  const { name, balance } = useContext(UserContext);
+
   return (
     <Container>
       <NavBar />
       <Header>
         <div>
-          <h2> Olá!</h2>
-          <h3> Saldo: R$</h3>
+          <h2> Olá {name}!</h2>
+          <h3> Saldo: R$ {balance}</h3>
         </div>
         <p>Encontre os melhores produtos orgânicos!</p>
       </Header>

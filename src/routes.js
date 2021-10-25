@@ -9,14 +9,14 @@ export default function Router() {
   return(
     <BrowserRouter>
       <Switch>
-        <Route exact path="/">
-          <UserProvider>
-            <Login />
-          </UserProvider>
-        </Route>
-        <Route path="/fair">
-          <Feira />
-        </Route>
+        <UserProvider>
+          <Route exact path="/">
+              <Login />
+          </Route>
+          <Route path="/fair">
+            <Feira />
+          </Route> 
+        </UserProvider>
         <Route path="/cart">
           <Carrinho />
         </Route>
