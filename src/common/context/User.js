@@ -2,7 +2,7 @@ import { createContext, useState } from 'react';
 
 export const UserContext = createContext();
 // Nomeia o nosso contexto dentro do devTools
-UserContext.displayName = "UserContext";
+UserContext.displayName = "User";
 
 export const UserProvider = ({ children }) => {
   const [name, setName] = useState("");
