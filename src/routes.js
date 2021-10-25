@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Login from 'pages/Login';
 import Feira from 'pages/Feira';
 import Carrinho from 'pages/Carrinho';
+import { UserContext } from 'common/context/User';
 
 export default function Router() {
   const [name, setName] = useState("");
@@ -13,12 +14,10 @@ export default function Router() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Login 
-            name={name}
-            setName={setName}
-            balance={balance}
-            setBalance={setBalance}
-          />
+          {/* Provendo os valores para os componentes encapsulados */}
+          <UserContext.Provider value={{ name, setName, balance, setBalance }}>
+            <Login />
+          </UserContext.Provider>
         </Route>
         <Route path="/fair">
           <Feira />
