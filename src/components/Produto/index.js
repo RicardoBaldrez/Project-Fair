@@ -1,10 +1,10 @@
 import { Container } from './styles';
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { IconButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-import { CartContext } from 'common/context/Cart';
+import { useCartContext } from 'common/context/Cart';
 
 function Produto({
   nome,
@@ -12,21 +12,8 @@ function Produto({
   id,
   valor,
 }) {
-  const { cart, setCart } = useContext(CartContext);
-
-  function addProduct(newProduct) {
-    const productExist = cart.some(productItem => productItem.id === newProduct.id);
-    if(!productExist) {
-      newProduct.quantity = 1;
-      return setCart(previousCart => 
-        [ ...previousCart, newProduct]
-      );
-    }
-    setCart(previousCart => previousCart.map(itemCart => {
-      if(itemCart.id === newProduct.id) itemCart.quantity += 1;
-      return itemCart;
-    }))
-  }
+  const { cart, addProduct } = useCartContext();
+  const productCart = cart.find(item => item.id === id);
 
   return (
       <Container>
@@ -45,6 +32,7 @@ function Produto({
           >
             <RemoveIcon />
           </IconButton>
+          {productCart?.quantity || 0}
           <IconButton onClick={() => addProduct({ nome, foto, id, valor })}>
             <AddIcon />
           </IconButton>

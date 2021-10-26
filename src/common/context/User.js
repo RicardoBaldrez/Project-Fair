@@ -5,7 +5,7 @@ export const UserContext = createContext();
 UserContext.displayName = "User";
 
 export const UserProvider = ({ children }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState("Cliente");
   const [balance, setBalance] = useState(0);
 
   return(
