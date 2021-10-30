@@ -18,11 +18,11 @@ export default function Router() {
             <Route path="/fair">
               <Feira />
             </Route>
+            <Route path="/cart">
+              <Carrinho />
+            </Route>
           </CartProvider>
         </UserProvider>
-        <Route path="/cart">
-          <Carrinho />
-        </Route>
       </Switch>
     </BrowserRouter>
   );
