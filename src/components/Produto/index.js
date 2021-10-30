@@ -12,7 +12,7 @@ function Produto({
   id,
   valor,
 }) {
-  const { cart, addProduct } = useCartContext();
+  const { cart, addProduct, removeProduct } = useCartContext();
   const productCart = cart.find(item => item.id === id);
 
   return (
@@ -29,11 +29,15 @@ function Produto({
         <div>
           <IconButton
             color="secondary"
+            onClick={() => removeProduct(id)}
           >
             <RemoveIcon />
           </IconButton>
-          {productCart?.quantity || 0}
-          <IconButton onClick={() => addProduct({ nome, foto, id, valor })}>
+          { productCart?.quantity || 0 }
+          <IconButton
+            color="primary"
+            onClick={() => addProduct({ nome, foto, id, valor })}
+          >
             <AddIcon />
           </IconButton>
         </div>

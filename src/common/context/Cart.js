@@ -16,7 +16,14 @@ export const CartProvider = ({ children }) => {
 export const useCartContext = () => {
   const { cart, setCart } = useContext(CartContext);
 
-  function addProduct(newProduct) {
+  const modifyQuantity = (id, quantity) => {
+    return cart.map(productItem => {
+      if(productItem.id === id) productItem.quantity += quantity;
+      return productItem;
+    })
+  }
+
+  const addProduct = (newProduct) => {
     const productExist = cart.some(productItem => productItem.id === newProduct.id);
     if(!productExist) {
       newProduct.quantity = 1;
@@ -24,15 +31,22 @@ export const useCartContext = () => {
         [ ...previousCart, newProduct]
       );
     }
-    setCart(previousCart => previousCart.map(productItem => {
-      if(productItem.id === newProduct.id) productItem.quantity += 1;
-      return productItem;
-    }))
+    setCart(modifyQuantity(newProduct.id, 1));
+  }
+
+  const removeProduct = (id) => {
+    const product = cart.find(itemCart => itemCart.id === id);
+    const isTheLast = product.quantity === 1;
+    if(isTheLast) {
+      return setCart(allItemsCart => allItemsCart.filter(itemCart => itemCart.id !== id));
+    }
+    setCart(modifyQuantity(id, -1));
   }
 
   return {
     cart,
     setCart,
     addProduct,
+    removeProduct,
   }
 }
