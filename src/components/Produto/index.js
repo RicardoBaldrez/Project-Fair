@@ -13,7 +13,7 @@ function Produto({
   valor,
 }) {
   const { cart, addProduct, removeProduct } = useCartContext();
-  const productCart = cart.find(item => item.id === id);
+  const productCart = cart.find(product => product.id === id);
 
   return (
       <Container>
@@ -29,6 +29,7 @@ function Produto({
         <div>
           <IconButton
             color="secondary"
+            disabled={!productCart}
             onClick={() => removeProduct(id)}
           >
             <RemoveIcon />

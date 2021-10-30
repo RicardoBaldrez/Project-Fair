@@ -6,56 +6,61 @@ import {
   Titulo,
   InputContainer
 } from './styles';
+
 import {
   Input,
   InputLabel,
-  InputAdornment 
+  InputAdornment
 } from '@material-ui/core';
-import { Button } from '@material-ui/core';
 
-import { UserContext } from 'common/context/User';
+import {
+  Button
+} from '@material-ui/core';
+
+import {
+  UserContext
+} from 'common/context/User';
 
 function Login() {
   const history = useHistory();
-  const { name, setName, balance, setBalance } = useContext(UserContext);
+  const {
+    name,
+    setName,
+    balance,
+    setBalance
+  } = useContext(UserContext);
 
   return (
-    <Container>
-      <Titulo>
-        Insira o seu nome
-      </Titulo>
+    <Container >
+      <Titulo >
+        Insira o seu nome 
+      </Titulo> 
       <InputContainer>
         <InputLabel>
-          Nome
-        </InputLabel>
-        <Input
-          type="text"
+          Nome 
+        </InputLabel> 
+        <Input type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-        />
-      </InputContainer>
+        /> 
+      </InputContainer> 
       <InputContainer>
-        <InputLabel>
+        <InputLabel >
           Saldo
-        </InputLabel>
-        <Input
-        type="number"
-        value={balance}
-        onChange={(e) => setBalance(e.target.value)}
-        startAdornment={
-          <InputAdornment position="start">
-            R$
-          </InputAdornment>
-        }
-      />
+        </InputLabel> 
+        <Input type="number"
+          value={balance}
+          onChange={(e) => setBalance(e.target.value)}
+          startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+        /> 
       </InputContainer>
-      <Button
-        variant="contained"
+      <Button variant="contained"
         color="primary"
-        onClick={() => history.push('/fair')}
+        disabled={name.length < 4}
+        onClick={() => history.push('/fair')} 
       >
         Avançar
-      </Button>
+      </Button> 
     </Container>
   )
 };
