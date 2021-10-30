@@ -1,20 +1,28 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export const CartContext = createContext();
 CartContext.displayName = "Cart";
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [quantityProducts, setQuantityProducts] = useState(0);
 
   return (
-    <CartContext.Provider value={{ cart, setCart }}>
+    <CartContext.Provider 
+      value={{ 
+        cart,
+        setCart,
+        quantityProducts, 
+        setQuantityProducts,
+      }}
+    >
       { children }
     </CartContext.Provider>
   );
 }
 
 export const useCartContext = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, setCart, quantityProducts, setQuantityProducts } = useContext(CartContext);
 
   const modifyQuantity = (id, quantity) => {
     return cart.map(productItem => {
@@ -43,10 +51,17 @@ export const useCartContext = () => {
     setCart(modifyQuantity(id, -1));
   }
 
+  useEffect(() => {
+    const newQuantityProducts = cart.reduce((count, product) => count + product.quantity, 0);
+    setQuantityProducts(newQuantityProducts);
+  }, [cart, setQuantityProducts]);
+
   return {
     cart,
     setCart,
     addProduct,
     removeProduct,
+    quantityProducts,
+    setQuantityProducts,
   }
 }
