@@ -9,7 +9,7 @@ import { Container, Voltar, TotalContainer, PagamentoContainer} from './styles';
 
 function Carrinho() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const { cart } = useCartContext();
+  const { cart, valueTotalCart } = useCartContext();
 
   const { formPayment, paymentTypes, changingFormPayment } = usePaymentContext();
 
@@ -42,8 +42,8 @@ function Carrinho() {
       </PagamentoContainer>
       <TotalContainer>
           <div>
-            <h2>Total no Carrinho: </h2>
-            <span>R$ </span>
+            <h2>Total no Carrinho:</h2>
+            <span>R$ { valueTotalCart.toFixed(2) }</span>
           </div>
           <div>
             <h2> Saldo: </h2>
