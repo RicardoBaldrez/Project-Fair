@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { usePaymentContext } from './Payment';
+import { UserContext } from './User';
 
 export const CartContext = createContext();
 CartContext.displayName = "Cart";
@@ -25,7 +27,22 @@ export const CartProvider = ({ children }) => {
 }
 
 export const useCartContext = () => {
-  const { cart, setCart, quantityProducts, setQuantityProducts, valueTotalCart, setValueTotalCart } = useContext(CartContext);
+  const { 
+    cart, 
+    setCart, 
+    quantityProducts, 
+    setQuantityProducts, 
+    valueTotalCart, 
+    setValueTotalCart 
+  } = useContext(CartContext);
+
+  const {
+    setBalance
+  } = useContext(UserContext);
+
+  const {
+    formPayment
+  } = usePaymentContext();
 
   const modifyQuantity = (id, quantity) => {
     return cart.map(productItem => {
@@ -54,6 +71,11 @@ export const useCartContext = () => {
     setCart(modifyQuantity(id, -1));
   }
 
+  const makePurchase = () => {
+    setCart([]);
+    setBalance(currentBalance => currentBalance - valueTotalCart);
+  }
+
   useEffect(() => {
     const { newQuantityProducts, newTotal } = cart.reduce((count, product) => ({
       newQuantityProducts: count.newQuantityProducts + product.quantity,
@@ -64,14 +86,15 @@ export const useCartContext = () => {
     });
     
     setQuantityProducts(newQuantityProducts);
-    setValueTotalCart(newTotal);
+    setValueTotalCart(newTotal * formPayment.fees);
     
-  }, [cart, setQuantityProducts, setValueTotalCart]);
+  }, [cart, setQuantityProducts, setValueTotalCart, formPayment]);
 
   return {
     cart,
     setCart,
     addProduct,
+    makePurchase,
     removeProduct,
     valueTotalCart,
     quantityProducts,
