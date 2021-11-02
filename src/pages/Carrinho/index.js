@@ -1,19 +1,20 @@
+import { useContext, useState, useMemo } from 'react';
 import { Button, Snackbar, InputLabel, Select, MenuItem } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useCartContext } from 'common/context/Cart';
 import { usePaymentContext } from 'common/context/Payment';
+import { UserContext } from 'common/context/User';
 import Produto from 'components/Produto';
-import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Container, Voltar, TotalContainer, PagamentoContainer} from './styles';
 
 function Carrinho() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const { cart, valueTotalCart } = useCartContext();
-
+  const { balance } = useContext(UserContext);
   const { formPayment, paymentTypes, changingFormPayment } = usePaymentContext();
-
   const history = useHistory();
+  const total = useMemo(() => balance - valueTotalCart, [balance, valueTotalCart]);
   
   return (
     <Container>
@@ -47,39 +48,40 @@ function Carrinho() {
           </div>
           <div>
             <h2> Saldo: </h2>
-            <span> R$ </span>
+            <span> R$ { Number(balance).toFixed(2) }</span>
           </div>
           <div>
             <h2> Saldo Total: </h2>
-            <span> R$ </span>
+            <span> R$ { total.toFixed(2) }</span>
           </div>
         </TotalContainer>
       <Button
         onClick={() => {
           setOpenSnackbar(true);
         }}
+        disabled={total <= 0}
         color="primary"
         variant="contained"
       >
-         Comprar
-       </Button>
-        <Snackbar
-          anchorOrigin={
-            { 
-              vertical: 'top',
-              horizontal: 'right'
-            }
+        Comprar
+      </Button>
+      <Snackbar
+        anchorOrigin={
+          { 
+            vertical: 'top',
+            horizontal: 'right'
           }
-          open={openSnackbar}
+        }
+        open={openSnackbar}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <MuiAlert
           onClose={() => setOpenSnackbar(false)}
+          severity="success"
         >
-           <MuiAlert
-            onClose={() => setOpenSnackbar(false)}
-            severity="success"
-          >
-            Compra feita com sucesso!
-          </MuiAlert>
-        </Snackbar>
+          Compra feita com sucesso!
+        </MuiAlert>
+      </Snackbar>
     </Container>
   )
 }
